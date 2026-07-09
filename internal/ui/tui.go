@@ -15,8 +15,9 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-// NewModel creates a new TUI model with the given SSH hosts
-func NewModel(hosts []config.SSHHost, configFile string, searchMode bool, currentVersion string, noUpdateCheck bool) Model {
+// NewModel creates a new TUI model with the given SSH hosts.
+// The search input is focused at startup so users can filter hosts right away.
+func NewModel(hosts []config.SSHHost, configFile string, currentVersion string, noUpdateCheck bool) Model {
 	// Load application configuration
 	appConfig, err := config.LoadAppConfig()
 	if err != nil {
@@ -60,7 +61,7 @@ func NewModel(hosts []config.SSHHost, configFile string, searchMode bool, curren
 		height:         24,
 		ready:          false,
 		viewMode:       ViewList,
-		searchMode:     searchMode,
+		searchMode:     true,
 	}
 
 	// Apply visibility filter (showHidden is false by default)
@@ -75,9 +76,7 @@ func NewModel(hosts []config.SSHHost, configFile string, searchMode bool, curren
 	ti.Placeholder = "Search hosts or tags..."
 	ti.CharLimit = 50
 	ti.Width = 25
-	if searchMode {
-		ti.Focus()
-	}
+	ti.Focus()
 
 	// Use dynamic column width calculation (will fallback to static if width not available)
 	nameWidth, hostnameWidth, tagsWidth, lastLoginWidth := m.calculateDynamicColumnWidths(sortedHosts)
@@ -161,8 +160,8 @@ func NewModel(hosts []config.SSHHost, configFile string, searchMode bool, curren
 }
 
 // RunInteractiveMode starts the interactive TUI interface
-func RunInteractiveMode(hosts []config.SSHHost, configFile string, searchMode bool, currentVersion string, noUpdateCheck bool) error {
-	m := NewModel(hosts, configFile, searchMode, currentVersion, noUpdateCheck)
+func RunInteractiveMode(hosts []config.SSHHost, configFile string, currentVersion string, noUpdateCheck bool) error {
+	m := NewModel(hosts, configFile, currentVersion, noUpdateCheck)
 
 	// Start the application in alt screen mode for clean output
 	p := tea.NewProgram(m, tea.WithAltScreen())

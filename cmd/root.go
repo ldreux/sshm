@@ -24,9 +24,6 @@ var configFile string
 // forceTTY forces pseudo-TTY allocation for remote commands
 var forceTTY bool
 
-// searchMode enables the focus on search mode at startup
-var searchMode bool
-
 // noUpdateCheck disables the async update check in the TUI
 var noUpdateCheck bool
 
@@ -145,7 +142,7 @@ func runInteractiveMode() {
 	}
 
 	// Run the interactive TUI
-	if err := ui.RunInteractiveMode(hosts, configFile, searchMode, AppVersion, noUpdateCheck); err != nil {
+	if err := ui.RunInteractiveMode(hosts, configFile, AppVersion, noUpdateCheck); err != nil {
 		log.Fatalf("Error running interactive mode: %v", err)
 	}
 }
@@ -244,7 +241,6 @@ func Execute() {
 func init() {
 	RootCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", "SSH config file to use (default: ~/.ssh/config)")
 	RootCmd.Flags().BoolVarP(&forceTTY, "tty", "t", false, "Force pseudo-TTY allocation (useful for interactive remote commands)")
-	RootCmd.PersistentFlags().BoolVarP(&searchMode, "search", "s", false, "Focus on search input at startup")
 	RootCmd.PersistentFlags().BoolVar(&noUpdateCheck, "no-update-check", false, "Disable automatic update check")
 
 	RootCmd.SetVersionTemplate("{{.Name}} version {{.Version}}\n")

@@ -108,7 +108,7 @@ sshm
 - `f` - Port forwarding setup
 - `H` - Toggle hidden hosts visibility
 - `q` - Quit
-- `/` - Search/filter hosts
+- `/` - Focus the search bar (already focused at startup; press `Enter` to jump back to the host list)
 
 **Real-time Status Indicators:**
 - 🟢 **Online** - Host is reachable via SSH
